@@ -47,17 +47,16 @@ export default function Dashboard() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold">
-            AI Decision Intelligence
+            AI Education Assistant
           </h1>
 
           <p className="mt-2 text-slate-400">
-            Coordinate specialized AI agents to analyze business problems.
+            Your intelligent multi-agent assistant for personalized education, learning, and career guidance.
           </p>
         </div>
 
         {/* Request Section */}
         <div className="mt-8">
-
           <label className="block mb-2 text-sm font-medium text-slate-300">
             Enter Your Request
           </label>
@@ -65,7 +64,7 @@ export default function Dashboard() {
           <textarea
             value={request}
             onChange={(e) => setRequest(e.target.value)}
-            placeholder="Example: How can AI improve business decision making?"
+            placeholder="Example: What career path should I choose after graduation?"
             className="w-full h-32 rounded-xl bg-slate-900 border border-slate-700 p-4 text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
           />
 
@@ -153,6 +152,10 @@ export default function Dashboard() {
                   Topic: {response.research.topic}
                 </p>
 
+                <p className="mb-3 text-sm text-slate-400 font-medium">
+                  Summary:
+                </p>
+
                 <div className="whitespace-pre-wrap text-slate-300">
                   {response.research.information}
                 </div>
@@ -172,6 +175,10 @@ export default function Dashboard() {
                   Topic: {response.analysis.topic}
                 </p>
 
+                <p className="mb-3 text-sm text-slate-400 font-medium">
+                  Summary:
+                </p>
+
                 <div className="whitespace-pre-wrap text-slate-300">
                   {response.analysis.analysis}
                 </div>
@@ -189,6 +196,10 @@ export default function Dashboard() {
 
                 <p className="mb-3 text-sm text-blue-300">
                   Topic: {response.decision.topic}
+                </p>
+
+                <p className="mb-3 text-sm text-blue-200 font-medium">
+                  Summary:
                 </p>
 
                 <div className="whitespace-pre-wrap text-slate-200">
