@@ -2,6 +2,7 @@ from agents.planner_agent import PlannerAgent
 from agents.research_agent import ResearchAgent
 from agents.analysis_agent import AnalysisAgent
 from agents.decision_agent import DecisionAgent
+from tools.study_planner_tool import StudyPlannerTool
 
 
 class AgentWorkflow:
@@ -10,6 +11,7 @@ class AgentWorkflow:
         self.researcher = ResearchAgent()
         self.analyzer = AnalysisAgent()
         self.decision_maker = DecisionAgent()
+        self.study_planner = StudyPlannerTool()
 
     def run(self, user_request):
 
@@ -20,17 +22,33 @@ class AgentWorkflow:
         plan = self.planner.create_plan(user_request)
         print(plan)
 
-        # 2. Research Agent
+        # 2. Study Planner Tool
+        study_plan_result = None
+
+        if (
+            "study plan" in user_request.lower()
+            or "study schedule" in user_request.lower()
+        ):
+            print("\n[Tool] Study Planner Tool")
+
+            study_plan_result = self.study_planner.run(
+                subject="Python",
+                days=5
+            )
+
+            print(study_plan_result)
+
+        # 3. Research Agent
         print("\n[2] Research Agent")
         research_result = self.researcher.research(user_request)
         print(research_result["information"])
 
-        # 3. Analysis Agent
+        # 4. Analysis Agent
         print("\n[3] Analysis Agent")
         analysis_result = self.analyzer.analyze(research_result)
         print(analysis_result["analysis"])
 
-        # 4. Decision Agent
+        # 5. Decision Agent
         print("\n[4] Decision Agent")
         decision_result = self.decision_maker.make_decision(
             analysis_result
@@ -39,6 +57,7 @@ class AgentWorkflow:
 
         return {
             "plan": plan,
+            "study_plan": study_plan_result,
             "research": research_result,
             "analysis": analysis_result,
             "decision": decision_result
@@ -49,7 +68,7 @@ if __name__ == "__main__":
 
     workflow = AgentWorkflow()
 
-    request = "How can AI improve business decision making?"
+    request = "Create a 5-day Python study plan"
 
     result = workflow.run(request)
 

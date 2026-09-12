@@ -39,7 +39,7 @@ def test_analysis_agent():
     result = agent.analyze(research_result)
 
     assert result["topic"] != ""
-    assert len(result["key_points"]) > 0
+    assert len(result["analysis"]) > 0
 
 
 def test_decision_agent():
@@ -47,14 +47,13 @@ def test_decision_agent():
 
     analysis_result = {
         "topic": "AI in business decision making",
-        "summary": "AI can support business analysis.",
-        "key_points": [
-            "Analyze information",
-            "Evaluate options"
-        ]
+        "analysis": """
+        AI can support business analysis through data analysis,
+        predictive analytics, automation, and better decision support.
+        """
     }
 
     result = agent.make_decision(analysis_result)
 
-    assert result["decision"] != ""
-    assert result["reason"] != ""
+    assert result["topic"] != ""
+    assert len(result["decision"]) > 0

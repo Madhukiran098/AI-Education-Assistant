@@ -6,8 +6,8 @@ from workflows.workflow import AgentWorkflow
 
 
 app = FastAPI(
-    title="AI Agent Coordination & Decision Engine",
-    description="Multi-agent AI decision support system",
+    title="AI Education & Career Guidance Assistant",
+    description="Multi-agent AI education and career guidance system",
     version="1.0.0"
 )
 
@@ -35,7 +35,7 @@ workflow = AgentWorkflow()
 @app.get("/")
 def root():
     return {
-        "message": "AI Agent Coordination & Decision Engine API is running"
+        "message": "AI Education & Career Guidance Assistant API is running"
     }
 
 
@@ -47,7 +47,17 @@ def run_agent(data: AgentRequest):
     return {
         "request": data.request,
         "plan": result["plan"],
-        "research": result["research"]["information"],
-        "analysis": result["analysis"]["analysis"],
-        "decision": result["decision"]["decision"]
+        "study_plan": result["study_plan"],
+        "research": {
+            "topic": result["research"]["topic"],
+            "information": result["research"]["information"]
+        },
+        "analysis": {
+            "topic": result["analysis"]["topic"],
+            "analysis": result["analysis"]["analysis"]
+        },
+        "decision": {
+            "topic": result["decision"]["topic"],
+            "decision": result["decision"]["decision"]
+        }
     }
