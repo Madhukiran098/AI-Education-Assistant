@@ -1,0 +1,40 @@
+tools = [
+    ("CALC", "Calculation"),
+    ("VALID", "Data Validation"),
+    ("WEB", "Web Search"),
+    ("MSG", "Communication"),
+    ("REPORT", "Report Generation"),
+    ("MAIL", "Email"),
+    ("DATA", "Data Retrieval"),
+    ("PLAN", "Study Planner"),
+    ("CAL", "Calendar")
+]
+
+cols = st.columns(3)
+
+for index, (icon, name) in enumerate(tools):
+    with cols[index % 3]:
+        st.markdown(
+            f'''
+            <div class="tool-card">
+                <div style="
+                    display:inline-flex;
+                    align-items:center;
+                    justify-content:center;
+                    width:60px;
+                    height:60px;
+                    border-radius:50%;
+                    background:#1a3ab5;
+                    color:white;
+                    font-size:14px;
+                    font-weight:bold;
+                    margin-bottom:10px;
+                ">
+                    {icon}
+                </div>
+                <br>
+                <b>{name}</b>
+            </div>
+            ''',
+            unsafe_allow_html=True
+        )

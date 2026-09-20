@@ -31,7 +31,7 @@ class AgentWorkflow:
         ):
             print("\n[Tool] Study Planner Tool")
 
-            study_plan_result = self.study_planner.run(
+            study_plan_result = self.study_planner.execute(
                 subject="Python",
                 days=5
             )
