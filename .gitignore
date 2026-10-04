@@ -15,3 +15,5 @@ frontend/dist/
 
 # Logs
 *.log
+# Local runtime databases
+enterprise-ai-agent-engine/data/*.db

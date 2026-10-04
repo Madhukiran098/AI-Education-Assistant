@@ -1,78 +1,102 @@
+﻿import re
 class AnalysisAgent:
-    """Fast rule-based analysis agent for education and career requests."""
+    """M3 Analysis Agent - Insight Analyzer."""
 
     def __init__(self, tool_registry=None):
         self.name = "Analysis Agent"
+        self.role = "Insight Analyzer"
         self.tool_registry = tool_registry
 
-    def analyze(self, research_result):
-        research_information = research_result.get("information", "")
-        topic = research_result.get("topic", "")
+    def analyze(self, research_result, student_profile=None):
+        research_result = research_result or {}
+        student_profile = student_profile or {}
 
-        lower_topic = topic.lower()
+        topic = str(
+            research_result.get("topic", "")
+        ).strip()
 
-        if "career" in lower_topic:
-            analysis = (
-                "**Analysis and Insights**\n\n"
-                "The research indicates that AI can support students in making "
-                "career decisions through personalized recommendations and "
-                "skill analysis.\n\n"
-                "**Key Insights:**\n\n"
-                "1. **Career Recommendations**: AI can analyze interests, skills, "
-                "academic background, and career goals.\n\n"
-                "2. **Skill-Gap Identification**: AI can identify skills that "
-                "students need to develop for selected careers.\n\n"
-                "3. **Personalized Learning Paths**: AI can suggest courses, "
-                "resources, and learning paths based on student needs.\n\n"
-                "4. **Decision Support**: AI can help students compare career "
-                "options, while the final decision remains with the student.\n\n"
-                "**Recommendation:** Use AI as a career decision-support system "
-                "combined with guidance from educators and career counselors."
+        information = str(
+            research_result.get("information", "")
+        ).strip()
+
+        requirements = research_result.get(
+            "research_requirements",
+            []
+        )
+
+        preferences = student_profile.get(
+            "career_preferences",
+            ""
+        )
+
+        insights = []
+
+        if requirements:
+            insights.append(
+                "The requested information has been organized according to "
+                "the student's requirements."
             )
 
-        elif "study" in lower_topic or "python" in lower_topic:
-            analysis = (
-                "**Analysis and Insights**\n\n"
-                "AI can improve study effectiveness by creating personalized "
-                "plans, identifying learning gaps, recommending resources, "
-                "and supporting continuous practice.\n\n"
-                "**Recommendation:** Use a structured study plan with regular "
-                "practice, revision, and progress tracking."
+        if any(word in topic.lower() for word in [
+            "college", "colleges", "university", "universities"
+        ]):
+            insights.append(
+                "College options should be compared using course availability, "
+                "eligibility, fees, location, and career outcomes."
             )
 
-        elif "education" in lower_topic or "student" in lower_topic:
-            analysis = (
-                "**Analysis and Insights**\n\n"
-                "AI can support students through personalized learning, "
-                "academic assistance, skill assessment, and progress analysis.\n\n"
-                "**Recommendation:** Combine AI assistance with teacher guidance "
-                "and regular student feedback."
+        if any(word in topic.lower() for word in [
+            "career", "job", "profession", "employment"
+        ]):
+            insights.append(
+                "Career options should be evaluated using qualifications, "
+                "required skills, career scope, and relevant job roles."
             )
 
-        else:
-            analysis = (
-                "**Analysis and Insights**\n\n"
-                "The available research information was reviewed and the key "
-                "requirements of the user's request were identified.\n\n"
-                "**Recommendation:** Use the identified information to provide "
-                "a practical and user-focused response."
+        if any(word in topic.lower() for word in [
+            "fee", "fees", "cost", "affordable", "low fee"
+        ]):
+            insights.append(
+                "Affordability should be considered together with course quality, "
+                "eligibility, and expected career value."
             )
+
+        if preferences:
+            insights.append(
+                f"Student career preference context: {preferences}"
+            )
+
+        if not insights:
+            insights.append(
+                "The available research should be reviewed against the "
+                "student's stated requirement before making a final decision."
+            )
+
+        name_match = re.search(r"\b(?:my name is|i am|i'm|this is)\s+([A-Za-z][A-Za-z .'-]{0,39})", topic, re.IGNORECASE)
+        display_name = name_match.group(1).strip().rstrip(".") if name_match else "Student"
+
+        analysis = (
+            f"Analysis for: {display_name}\n\n"
+            "Key Insights:\n"
+            + "\n".join(f"- {item}" for item in insights)
+            + "\n\n"
+            "Research Information:\n"
+            + (information or "No additional research information available.")
+        )
 
         return {
+            "agent": self.name,
+            "role": self.role,
             "topic": topic,
-            "analysis": analysis
+            "analysis": analysis,
+            "key_insights": insights,
+            "research_input": research_result,
+            "student_profile": student_profile,
+            "next_agent": "Decision Agent",
         }
 
 
-if __name__ == "__main__":
-    agent = AnalysisAgent()
 
-    research_result = {
-        "topic": "AI in business decision making",
-        "information": "AI can improve business decision making through data analysis."
-    }
 
-    result = agent.analyze(research_result)
 
-    print("\n===== ANALYSIS AGENT =====")
-    print(result["analysis"])
+

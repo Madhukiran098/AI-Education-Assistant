@@ -1,110 +1,134 @@
-# AI Education Assistant – Multi-Agent Learning & Decision Engine
+# AI Agent Coordination & Decision Engine
 
-> A multi-agent AI education assistant that uses specialized agents for learning planning, research, analysis, and personalized recommendations.
+> A multi-agent AI education and career guidance platform for intelligent decision support, tool integration, personalized career guidance, memory management, workflow automation, and college analytics.
 
-### Architecture
-User Topic -> [Research Agent] -> [Planning Agent] -> [Analysis Agent] -> [Final Decision Agent] -> Dashboard
+## Project Overview
 
-### Key Features
-- 4 Specialized AI Agents using Ollama llama3.2
-- Real-time Execution Trace
-- Final Decision with actionable roadmap
-- FastAPI backend + Swagger Docs
-  
+The platform uses four specialized agents: Planner, Research, Analysis, and Decision. It provides student education and career support together with college administration and business analytics.
 
-### Tech Stack
-Backend: FastAPI, Ollama, Python
-Frontend: Streamlit
-Model: llama3.2
-Testing: Pytest
-### How to Run
-Backend:
-cd enterprise-ai-agent-engine
-pip install -r requirements.txt
-python -m uvicorn main:app --reload --port 8000
+## Milestones
 
-Frontend:
-cd frontend
-npm install
-npm run dev
+### M1 – Agent Environment Setup & Foundation Development
+- Multi-agent architecture
+- Planner, Research, Analysis and Decision agents
+- Streamlit dashboard
+- FastAPI backend foundation
 
-### API Endpoints
-GET / - Health check
-POST /run_agent - {"topic": "AI in Education"}
-## Milestone 2 – Tool Integration & Intelligent Action Execution
+### M2 – Tool Integration & Intelligent Action Execution
 
-Milestone 2 extends the AI Education & Career Guidance Assistant from a multi-agent decision-support platform into a tool-enabled AI assistance system.
+The platform contains **9 registered tools: 5 active and 4 inactive/planned**.
 
-### M2 Capabilities
+| Tool | Status |
+|---|---|
+| Communication | Active |
+| Data Retrieval | Active |
+| Data Validation | Active |
+| Report Generation | Active |
+| Study Planner | Active |
+| Calculation | Inactive / Planned |
+| Web Search | Inactive / Planned |
+| Email | Inactive / Planned |
+| Calendar | Inactive / Planned |
 
-* Intelligent tool selection based on user intent
-* Automated tool execution
-* Human-readable AI responses
-* Education and career support
-* Local Ollama AI processing
-* FastAPI backend integration
-* Streamlit user interface
+### M3 – Agent Coordination & Memory Management
+- Personalized career guidance
+- Career research and analysis
+- Preview recommendations
+- Personalized roadmap generation
+- Student memory
+- Purchase verification and access control
+- ₹150 personalized roadmap purchase
 
-### 9 Integrated Tools
+### M4 – Workflow Automation & Decision Intelligence
+- College Admin Dashboard
+- Student statistics
+- Free vs paid student analysis
+- Conversion and revenue analysis
+- Response-time and failure-rate monitoring
+- College catalog management
+- Career trends and communication logs
+- ₹5,000/year college subscription model
 
-1. **Calculation** – Performs mathematical calculations.
-2. **Communication** – Creates clear communication messages.
-3. **Data Retrieval** – Retrieves configured information.
-4. **Data Validation** – Validates user-provided information.
-5. **Report Generation** – Generates structured reports.
-6. **Study Planner** – Creates personalized study plans.
-7. **Web Search** – Processes research and information requests.
-8. **Email** – Prepares email communication.
-9. **Calendar** – Checks and manages meeting requests.
+### M5 – Enterprise API, Dashboard & Deployment
+- Enterprise FastAPI API layer
+- Streamlit dashboards
+- Workflow services
+- Monitoring support
+- Validation and tool execution endpoints
+- History and statistics endpoints
+- Docker deployment configuration
 
-### M2 Processing Flow
+## Backend API
 
-```text
-User Request
-     ↓
-Planner Agent
-     ↓
-Research Agent
-     ↓
-Analysis Agent
-     ↓
-Decision Agent
-     ↓
-Tool Selection
-     ↓
-Tool Execution
-     ↓
-Human-Readable Response
-     ↓
-Streamlit Dashboard
-```
+FastAPI: http://127.0.0.1:8002
 
-### M2 Example Requests
+Main endpoints:
+- GET /health
+- POST /run
+- GET /tools
+- POST /tools/execute
+- GET /history
+- GET /statistics
 
-* `Calculate 25% of 800.`
-* `Create a 5-day study plan for learning Python.`
-* `How can AI help students choose the right career?`
-* `Generate a report on the importance of AI in education.`
-* `Check whether this email address is valid.`
-* `Prepare an email to my mentor requesting a project review.`
-* `Check whether a project meeting is available tomorrow at 4 PM.`
+## Applications
 
-### M2 Technology Stack
+- M1/M2 Student Platform: http://localhost:8503
+- M3 Student Career Guidance: http://localhost:8501
+- M4 College Admin Dashboard: http://localhost:8502
 
-```text
-Backend: FastAPI, Python
-Frontend: Streamlit
-AI Engine: Ollama
-Model: llama3.2
-Testing: Pytest
-```
+## Technology Stack
 
-### Unit Test Plan
-1. Health Endpoint - GET /
-2. Research Agent - 5 points
-3. Planning Agent - plan
-4. Analysis Agent - analysis
-5. Final Decision - final output
+- Backend: FastAPI
+- Frontend: Streamlit
+- Language: Python
+- Testing: Pytest
+- API: REST
+- Memory: Local persistent storage / vector memory
+- Deployment: Docker
 
-### Author
-Madhukiran098 - AI Assistance Project
+## Testing
+
+Automated tests cover agents, APIs, tools, request validation, M3 workflows, college administration, performance, and selected tool APIs.
+
+**Latest validation: 18 passed, 2 warnings.**
+
+Run:
+
+`powershell
+python -m pytest tests\ -q
+`
+
+## Project Structure
+
+`	ext
+enterprise-ai-agent-engine/
+├── agents/
+├── api/
+├── tools/
+├── workflows/
+├── tests/
+├── streamlit_app.py
+├── m3_student_app.py
+├── college_admin_dashboard.py
+├── memory_store.py
+├── career_rag_memory.py
+├── requirements.txt
+├── Dockerfile
+└── docker-compose.yml
+`
+
+## Documentation
+
+- DEMO_STEPS.md
+- EVALUATION_REPORT.md
+- MILESTONE_3_4.md
+- SUBMISSION_CHECKLIST.md
+- M1_M2_M3_CONNECTION.md
+
+Evidence screenshots are included for the completed milestones.
+
+## Author
+
+**Madhukiran098**
+
+AI Agent Coordination & Decision Engine

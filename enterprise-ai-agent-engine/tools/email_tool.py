@@ -1,4 +1,4 @@
-from typing import Any, Dict
+﻿from typing import Any, Dict
 
 from tools.base_tool import (
     BaseTool,
@@ -17,6 +17,8 @@ class EmailTool(BaseTool):
             category=ToolCategory.COMMUNICATION,
             version="1.0.0"
         )
+
+        self.enabled = False
 
         self.parameters = [
             ToolParameter(

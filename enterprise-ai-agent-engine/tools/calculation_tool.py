@@ -1,4 +1,7 @@
-﻿from .base_tool import BaseTool, ToolResult, ToolParameter, ToolCategory
+﻿import ast
+import operator
+
+from .base_tool import BaseTool, ToolResult, ToolParameter, ToolCategory
 
 
 class CalculationTool(BaseTool):
@@ -8,8 +11,10 @@ class CalculationTool(BaseTool):
             name="CalculationTool",
             description="Perform mathematical calculations",
             category=ToolCategory.ANALYSIS,
-            version="1.1.0"
+            version="1.2.0"
         )
+
+        self.enabled = False
 
         self.parameters = [
             ToolParameter(
@@ -28,7 +33,8 @@ class CalculationTool(BaseTool):
                     "multiply",
                     "divide",
                     "add",
-                    "subtract"
+                    "subtract",
+                    "expression"
                 ]
             ),
             ToolParameter(
@@ -36,13 +42,84 @@ class CalculationTool(BaseTool):
                 type="array",
                 description="Values to calculate",
                 required=False
+            ),
+            ToolParameter(
+                name="expression",
+                type="string",
+                description="Mathematical expression evaluated using BODMAS",
+                required=False
             )
         ]
+
+    @staticmethod
+    def _safe_evaluate(expression: str):
+        expression = expression.replace("_", "*").replace("^", "**")
+        tree = ast.parse(expression, mode="eval")
+
+        allowed_binary = {
+            ast.Add: operator.add,
+            ast.Sub: operator.sub,
+            ast.Mult: operator.mul,
+            ast.Div: operator.truediv,
+            ast.Pow: operator.pow,
+            ast.Mod: operator.mod,
+        }
+
+        allowed_unary = {
+            ast.UAdd: operator.pos,
+            ast.USub: operator.neg,
+        }
+
+        def evaluate(node):
+            if isinstance(node, ast.Expression):
+                return evaluate(node.body)
+
+            if isinstance(node, ast.Constant) and isinstance(
+                node.value, (int, float)
+            ):
+                return node.value
+
+            if isinstance(node, ast.BinOp) and type(node.op) in allowed_binary:
+                left = evaluate(node.left)
+                right = evaluate(node.right)
+
+                if isinstance(node.op, ast.Div) and right == 0:
+                    raise ZeroDivisionError("Cannot divide by zero")
+
+                return allowed_binary[type(node.op)](left, right)
+
+            if isinstance(node, ast.UnaryOp) and type(node.op) in allowed_unary:
+                return allowed_unary[type(node.op)](evaluate(node.operand))
+
+            raise ValueError("Unsupported expression")
+
+        return evaluate(tree)
 
     def execute(self, **kwargs) -> ToolResult:
         try:
             operation = kwargs.get("operation")
             values = kwargs.get("values", [])
+            expression = kwargs.get("expression")
+
+            if operation == "expression":
+                if not expression:
+                    return ToolResult(
+                        success=False,
+                        error="Expression is required",
+                        tool_name=self.name
+                    )
+
+                result = self._safe_evaluate(str(expression))
+
+                return ToolResult(
+                    success=True,
+                    data={
+                        "operation": "expression",
+                        "expression": str(expression),
+                        "result": result
+                    },
+                    tool_name=self.name
+                )
 
             if not operation:
                 return ToolResult(

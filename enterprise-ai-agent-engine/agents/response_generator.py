@@ -1,4 +1,5 @@
-﻿from typing import Any, Dict
+﻿import re
+from typing import Any, Dict
 
 
 class HumanReadableResponseGenerator:
@@ -117,7 +118,14 @@ class HumanReadableResponseGenerator:
         if isinstance(result, float) and result.is_integer():
             result = int(result)
 
-        question = request.strip().rstrip("?")
+        question = request.strip().rstrip("?.! ")
+
+        question = re.sub(
+            r"^\s*calculate\s+",
+            "",
+            question,
+            flags=re.IGNORECASE
+        )
 
         if question.lower().startswith("what is "):
             question = question[8:].strip()
@@ -521,4 +529,7 @@ class HumanReadableResponseGenerator:
             return "\n".join(lines)
 
         return str(value)
+
+
+
 

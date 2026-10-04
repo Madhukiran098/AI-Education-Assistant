@@ -17,6 +17,8 @@ class WebSearchTool(BaseTool):
             version="1.0.0"
         )
 
+        self.enabled = False
+
         self.parameters = [
 
             ToolParameter(
@@ -149,3 +151,4 @@ class WebSearchTool(BaseTool):
                 error=f"Web search failed: {str(e)}",
                 tool_name=self.name
             )
+

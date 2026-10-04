@@ -218,12 +218,17 @@ class ToolIntegratedWorkflow:
             else {}
         )
 
-        human_readable_answer = self.response_generator.generate(
-            request=user_request,
-            selected_tool=selected_tool_name,
-            tool_result=tool_result_data
-        )
-
+        if selected_tool_name == "career":
+            human_readable_answer = decision_result.get(
+                "decision",
+                "Unable to generate career guidance."
+            )
+        else:
+            human_readable_answer = self.response_generator.generate(
+                request=user_request,
+                selected_tool=selected_tool_name,
+                tool_result=tool_result_data
+            )
         # Compile final results
         result = {
             "success": True,
@@ -298,4 +303,5 @@ if __name__ == "__main__":
         f"Tools Used: "
         f"{result.get('tool_statistics')}"
     )
+
 

@@ -12,20 +12,71 @@ class ToolSelector:
         request = user_request.lower().strip()
 
         # ---------------------------------------------------------
+        # CAREER REQUEST PRIORITY
+        # ---------------------------------------------------------
+        career_phrases = [
+            "career path",
+            "career guidance",
+            "career roadmap",
+            "software engineer",
+            "computer science",
+            "cse",
+            "suitable colleges",
+            "best colleges",
+            "college",
+            "course",
+            "engineering",
+            "placement",
+            "entrance exam",
+            "career"
+        ]
+
+        is_career_request = any(
+            phrase in request for phrase in career_phrases
+        )
+
+        # Career requests may contain scores/percentages such as
+        # "I scored 85%"; do not route those requests to Calculation.
+        if is_career_request:
+            return {
+                "success": True,
+                "tool_name": "career",
+                "confidence": 0.99,
+                "parameters": {
+                    "query": user_request
+                },
+                "reason": "Career request detected before calculation routing"
+            }
+
+        # ---------------------------------------------------------
         # DATA VALIDATION
         # ---------------------------------------------------------
-        if any(phrase in request for phrase in [
-            "validate",
-            "validation",
-            "check data",
-            "validate data",
-            "required field",
-            "missing field",
-            "empty field",
-            "check whether",
-            "is missing",
-            "is empty"
-        ]):
+        if (
+            any(phrase in request for phrase in [
+                "validate",
+                "validation",
+                "check data",
+                "validate data",
+                "required field",
+                "missing field",
+                "empty field",
+                "check whether",
+                "is missing",
+                "is empty"
+            ])
+            and not any(phrase in request for phrase in [
+                "calendar",
+                "schedule meeting",
+                "book meeting",
+                "schedule a meeting",
+                "meeting",
+                "appointment",
+                "check availability",
+                "available",
+                "tomorrow at",
+                "today at"
+            ])
+        ):
 
             if "email" in request:
                 validation_type = "email"
@@ -95,6 +146,27 @@ class ToolSelector:
         ]
 
         if any(phrase in request for phrase in calculation_phrases):
+
+            expression_match = re.search(
+                r"(?:calculate|calculation)\s+(.+)$",
+                user_request,
+                re.IGNORECASE
+            )
+
+            if expression_match:
+                expression = expression_match.group(1).strip()
+
+                if re.search(r"[+*/%^_()-]", expression):
+                    return {
+                        "success": True,
+                        "tool_name": "calculation",
+                        "confidence": 0.98,
+                        "parameters": {
+                            "operation": "expression",
+                            "expression": expression
+                        },
+                        "reason": "Mathematical expression detected"
+                    }
 
             numbers = re.findall(
                 r"-?\d+(?:\.\d+)?",
@@ -288,8 +360,16 @@ class ToolSelector:
                 re.IGNORECASE
             )
 
+            reverse_match = re.search(
+                r"^(?:create|make|prepare|generate)\s+(?:a|an)\s+\d+\s*[- ]?\s*day\s+(.+?)\s+(?:study plan|study schedule|learning plan)\.?$",
+                subject,
+                re.IGNORECASE
+            )
+
             if subject_match:
                 subject = subject_match.group(1).strip()
+            elif reverse_match:
+                subject = reverse_match.group(1).strip()
 
             subject = re.sub(
                 r"^(?:create|make|prepare|generate)\s+(?:a|an)\s+",
@@ -468,3 +548,7 @@ class ToolSelector:
             },
             "reason": "General request routed to research/web search"
         }
+
+
+
+

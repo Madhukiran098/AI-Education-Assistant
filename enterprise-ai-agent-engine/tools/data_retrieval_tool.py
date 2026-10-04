@@ -1,15 +1,17 @@
 ﻿from .base_tool import BaseTool, ToolResult, ToolParameter, ToolCategory
+from college_admin_dashboard import search_colleges, seed_sample_colleges
 
 
 class DataRetrievalTool(BaseTool):
 
-    def __init__(self):
+    def __init__(self, college_db_path=None):
         super().__init__(
             name="DataRetrievalTool",
             description="Retrieve information from configured data sources",
             category=ToolCategory.DATA_RETRIEVAL,
             version="1.0.0"
         )
+        self.college_db_path = college_db_path
 
         self.parameters = [
             ToolParameter(
@@ -34,15 +36,6 @@ class DataRetrievalTool(BaseTool):
             )
         ]
 
-        self.mock_database = {
-            "employees": [
-                {"id": 1, "name": "Rahul", "department": "Finance"},
-                {"id": 2, "name": "Priya", "department": "HR"},
-                {"id": 3, "name": "Arjun", "department": "IT"},
-                {"id": 4, "name": "Sneha", "department": "Marketing"},
-                {"id": 5, "name": "Kiran", "department": "Operations"}
-            ]
-        }
 
     def execute(self, **kwargs) -> ToolResult:
         try:
@@ -110,25 +103,20 @@ class DataRetrievalTool(BaseTool):
         limit: int
     ) -> ToolResult:
 
-        query_lower = query.lower()
-
-        for table_name, records in self.mock_database.items():
-
-            if table_name in query_lower:
-
-                limited_records = records[:limit]
-
-                return ToolResult(
-                    success=True,
-                    data={
-                        "source": "database",
-                        "query": query,
-                        "table": table_name,
-                        "records": limited_records,
-                        "count": len(limited_records)
-                    },
-                    tool_name=self.name
-                )
+        if "colleges" in query.lower() or "college" in query.lower():
+            seed_sample_colleges(self.college_db_path)
+            records = search_colleges(query, self.college_db_path)[:limit]
+            return ToolResult(
+                success=True,
+                data={
+                    "source": "database",
+                    "query": query,
+                    "table": "colleges",
+                    "records": records,
+                    "count": len(records),
+                },
+                tool_name=self.name,
+            )
 
         return ToolResult(
             success=False,

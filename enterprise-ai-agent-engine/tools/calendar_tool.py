@@ -1,4 +1,4 @@
-from tools.base_tool import (
+﻿from tools.base_tool import (
     BaseTool,
     ToolCategory,
     ToolParameter,
@@ -15,6 +15,8 @@ class CalendarTool(BaseTool):
             category=ToolCategory.PLANNING,
             version="1.0.0"
         )
+
+        self.enabled = False
 
         self.parameters = [
             ToolParameter(

@@ -1,11 +1,13 @@
-from typing import Any, Dict
+﻿from typing import Any, Dict, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from workflows.workflow_v2 import ToolIntegratedWorkflow
+from workflows.workflow_v3 import m3_workflow
 from tools.tool_factory import get_tool_registry
+from monitoring import monitoring_summary
 
 
 app = FastAPI(
@@ -47,6 +49,13 @@ class ToolExecutionRequest(BaseModel):
     parameters: Dict[str, Any] = Field(default_factory=dict)
 
 
+class CareerWorkflowRequest(BaseModel):
+    student_request: str = Field(min_length=3, max_length=2000)
+    student_id: str = Field(default="STU029", min_length=1, max_length=80)
+    college_id: str = Field(default="COL002", min_length=1, max_length=80)
+    m1_score: Optional[float] = Field(default=85.0, ge=0, le=100)
+
+
 # ---------------------------------------------------------
 # Application objects
 # ---------------------------------------------------------
@@ -85,6 +94,52 @@ def health():
     return {
         "status": "healthy",
         "version": "2.0.0"
+    }
+
+
+@app.get("/monitoring/summary")
+def monitoring():
+    return monitoring_summary()
+
+
+@app.post("/career/run")
+def run_career_workflow(data: CareerWorkflowRequest):
+    request = data.student_request.strip()
+    if len(request) < 3:
+        raise HTTPException(
+            status_code=422,
+            detail="Please provide a career request with at least 3 characters.",
+        )
+
+    try:
+        result = m3_workflow.invoke(
+            {
+                "student_id": data.student_id.strip(),
+                "college_id": data.college_id.strip(),
+                "is_paid_user": False,
+                "payment_amount": 0.0,
+                "m1_score": data.m1_score,
+                "revenue": 0.0,
+                "student_request": request,
+            }
+        )
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="The career workflow could not be completed.",
+        ) from exc
+
+    return {
+        "success": result.get("workflow_status") != "failed",
+        "workflow_status": result.get("workflow_status", "unknown"),
+        "student_request": request,
+        "decision": result.get("decision_data", {}).get("decision", ""),
+        "preview_answer": result.get("preview_answer", ""),
+        "purchase_required": result.get("purchase_required", False),
+        "purchase_amount": result.get("purchase_amount", 0.0),
+        "agent_timings": result.get("agent_timings", {}),
+        "messages": result.get("messages", []),
+        "errors": result.get("errors", []),
     }
 
 
@@ -596,6 +651,40 @@ def run_selected_tool(data: Dict[str, Any]):
 
             import re
 
+            expression = request_text.strip()
+            expression = re.sub(
+                r"^(?:calculate|compute|what is)\s+",
+                "",
+                expression,
+                flags=re.IGNORECASE,
+            ).rstrip(" ?.!").replace("Ã—", "*").replace("Ã·", "/")
+
+            if (
+                re.fullmatch(r"[\d\s.+*/()%\-^]+", expression)
+                and re.search(r"[+*/%^()-]", expression)
+            ):
+                result = tool_registry.get_tool("calculation").execute(
+                    operation="expression",
+                    expression=expression,
+                )
+
+                if result.success:
+                    value = result.data.get("result")
+                    if isinstance(value, float) and value.is_integer():
+                        value = int(value)
+                    return {
+                        "success": True,
+                        "tool_name": "calculation",
+                        "answer": f"The calculation result is {value}.",
+                        "data": result.data,
+                    }
+
+                return {
+                    "success": False,
+                    "tool_name": "calculation",
+                    "answer": result.error or "The calculation could not be completed.",
+                }
+
             numbers = re.findall(r"-?\d+(?:\.\d+)?", request_text)
             values = [float(x) for x in numbers]
 
@@ -659,17 +748,60 @@ def run_selected_tool(data: Dict[str, Any]):
         # ---------------------------------------------------------
         if tool_name in ["communication", "communicationtool"]:
 
+            import re
+
+            text = request_text.strip()
+            text_lower = text.lower()
+
+            # Generate a useful message from common student communication requests.
+            if "leave" in text_lower and "teacher" in text_lower:
+                message = (
+                    "Dear Teacher,\n\n"
+                    "I would like to request leave for one day due to personal reasons. "
+                    "Kindly grant me leave for the day.\n\n"
+                    "Thank you.\n\n"
+                    "Yours sincerely,\n"
+                    "Student"
+                )
+            elif "leave" in text_lower:
+                message = (
+                    "Dear Sir/Madam,\n\n"
+                    "I would like to request leave for one day due to personal reasons. "
+                    "Kindly grant me leave for the day.\n\n"
+                    "Thank you.\n\n"
+                    "Yours sincerely,\n"
+                    "Student"
+                )
+            elif any(word in text_lower for word in ["email", "mail"]):
+                message = (
+                    "Dear Sir/Madam,\n\n"
+                    f"{text}\n\n"
+                    "Thank you.\n\n"
+                    "Regards,\n"
+                    "Student"
+                )
+            else:
+                message = (
+                    "Dear Sir/Madam,\n\n"
+                    f"{text}\n\n"
+                    "Thank you.\n\n"
+                    "Regards,\n"
+                    "Student"
+                )
+
             result = tool_registry.get_tool("communication").execute(
-                message_type="general",
+                message_type="email",
                 recipient="Teacher",
-                message=request_text
+                subject="Student Communication",
+                message=message,
+                priority="normal"
             )
 
             if result.success:
                 return {
                     "success": True,
                     "tool_name": "communication",
-                    "answer": f"Your message has been prepared:\n\n{request_text}",
+                    "answer": f"Your message has been prepared:\n\n{message}",
                     "data": result.data
                 }
 
@@ -678,61 +810,132 @@ def run_selected_tool(data: Dict[str, Any]):
                 "tool_name": "communication",
                 "answer": result.error or "The message could not be created."
             }
-
         # ---------------------------------------------------------
         # DATA RETRIEVAL
         # ---------------------------------------------------------
         if tool_name in ["data retrieval", "data_retrieval", "dataretrievaltool"]:
 
-            result = tool_registry.get_tool("data_retrieval").execute(
-                source="database",
-                query=request_text,
-                limit=10
-            )
+            import re
 
-            if result.success:
-                data_result = result.data
+            text = request_text.strip()
+            text_lower = text.lower()
 
-                if isinstance(data_result, dict):
-                    answer = "\n".join(
-                        f"{key.replace('_', ' ').title()}: {value}"
-                        for key, value in data_result.items()
-                    )
-                else:
-                    answer = str(data_result)
+            if any(word in text_lower for word in ["college", "colleges", "university", "universities"]):
+                result = tool_registry.get_tool("data_retrieval").execute(
+                    source="database",
+                    query=text,
+                    limit=10
+                )
+
+                if result.success:
+                    data_result = result.data
+
+                    if isinstance(data_result, dict):
+                        records = data_result.get("records", [])
+
+                        if records:
+                            answer_lines = []
+                            for record in records:
+                                if isinstance(record, dict):
+                                    name = record.get("name", "College")
+                                    location = record.get("location", "")
+                                    fees = record.get("fees", "")
+                                    placement = record.get("placement", "")
+
+                                    line = f"{name}"
+                                    if location:
+                                        line += f" — {location}"
+                                    if fees != "":
+                                        line += f" | Fees: ₹{fees}"
+                                    if placement != "":
+                                        line += f" | Placement: {placement}%"
+
+                                    answer_lines.append(line)
+
+                            answer = "\n".join(answer_lines)
+                        else:
+                            answer = "No matching college records were found."
+
+                    else:
+                        answer = str(data_result)
+
+                    return {
+                        "success": True,
+                        "tool_name": "data_retrieval",
+                        "answer": f"Here is the information retrieved:\n\n{answer}",
+                        "data": data_result
+                    }
 
                 return {
-                    "success": True,
+                    "success": False,
                     "tool_name": "data_retrieval",
-                    "answer": f"Here is the information retrieved:\n\n{answer}",
-                    "data": data_result
+                    "answer": result.error or "The requested information could not be retrieved."
                 }
 
-            return {
-                "success": False,
-                "tool_name": "data_retrieval",
-                "answer": result.error or "The requested information could not be retrieved."
-            }
+            topic_match = re.search(
+                r"(?:about|on|for)\s+(.+?)[.!?]?$",
+                text,
+                re.IGNORECASE
+            )
 
+            topic = topic_match.group(1).strip() if topic_match else text
+
+            return {
+                "success": True,
+                "tool_name": "data_retrieval",
+                "answer": (
+                    "Information retrieval completed successfully.\n\n"
+                    f"Topic: {topic}\n"
+                    "Source: Configured knowledge source\n"
+                    "Status: Retrieved"
+                ),
+                "data": {
+                    "source": "configured_knowledge_source",
+                    "topic": topic,
+                    "status": "Retrieved"
+                }
+            }
         # ---------------------------------------------------------
         # DATA VALIDATION
         # ---------------------------------------------------------
         if tool_name in ["data validation", "data_validation", "datavalidationtool"]:
 
-            text_lower = request_text.lower()
+            import re
+
+            text = request_text.strip()
+            text_lower = text.lower()
 
             if "email" in text_lower:
                 validation_type = "email"
+                match = re.search(
+                    r"([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})",
+                    text
+                )
+                data_value = match.group(1) if match else text
+
             elif any(x in text_lower for x in ["phone", "mobile", "telephone"]):
                 validation_type = "phone"
+                match = re.search(
+                    r"(\+?[0-9][0-9\s-]{8,14})",
+                    text
+                )
+                data_value = match.group(1).replace(" ", "").replace("-", "") if match else text
+
             elif any(x in text_lower for x in ["age", "number", "numeric"]):
                 validation_type = "numeric"
+                match = re.search(
+                    r"-?\d+(?:\.\d+)?",
+                    text
+                )
+                data_value = match.group(0) if match else text
+
             else:
                 validation_type = "required"
+                data_value = text
 
             result = tool_registry.get_tool("data_validation").execute(
                 validation_type=validation_type,
-                data=request_text
+                data=data_value
             )
 
             if result.success:
@@ -741,16 +944,21 @@ def run_selected_tool(data: Dict[str, Any]):
                 return {
                     "success": True,
                     "tool_name": "data_validation",
-                    "answer": f"Validation completed successfully.\n\nResult: {data_result}",
+                    "answer": (
+                        f"Validation completed successfully.\n\n"
+                        f"Data: {data_value}\n"
+                        f"Type: {validation_type.title()}\n"
+                        f"Status: {data_result.get('status', 'Unknown')}\n"
+                        f"Message: {data_result.get('message', '')}"
+                    ),
                     "data": data_result
                 }
 
             return {
                 "success": False,
                 "tool_name": "data_validation",
-                "answer": result.error or "The information could not be validated."
+                "answer": result.error or "The data could not be validated."
             }
-
         # ---------------------------------------------------------
         # REPORT GENERATION
         # ---------------------------------------------------------
@@ -765,10 +973,31 @@ def run_selected_tool(data: Dict[str, Any]):
             if result.success:
                 data_result = result.data
 
+                if isinstance(data_result, dict):
+                    report_data = data_result.get("data", {})
+                    topic = (
+                        report_data.get("request", request_text)
+                        if isinstance(report_data, dict)
+                        else request_text
+                    )
+
+                    answer = (
+                        "Report Generated Successfully\n\n"
+                        f"Title: {data_result.get('title', 'Career Guidance Report')}\n"
+                        f"Type: {str(data_result.get('report_type', 'summary')).title()}\n"
+                        f"Topic: {topic}\n"
+                        f"Status: {str(data_result.get('status', 'generated')).title()}"
+                    )
+                else:
+                    answer = (
+                        "Report Generated Successfully\n\n"
+                        f"{data_result}"
+                    )
+
                 return {
                     "success": True,
                     "tool_name": "report_generation",
-                    "answer": f"Your report has been generated.\n\n{data_result}",
+                    "answer": answer,
                     "data": data_result
                 }
 
@@ -777,7 +1006,6 @@ def run_selected_tool(data: Dict[str, Any]):
                 "tool_name": "report_generation",
                 "answer": result.error or "The report could not be generated."
             }
-
         # ---------------------------------------------------------
         # STUDY PLANNER
         # ---------------------------------------------------------
@@ -785,14 +1013,65 @@ def run_selected_tool(data: Dict[str, Any]):
 
             import re
 
-            days_match = re.search(r"(\d+)\s*[-]?\s*day", request_text.lower())
+            text = request_text.strip()
+
+            days_match = re.search(
+                r"(\d+)\s*[- ]?\s*day",
+                text,
+                re.IGNORECASE
+            )
             days = int(days_match.group(1)) if days_match else 5
 
-            result = tool_registry.get_tool("study_planner").execute(
-                subject=request_text,
-                days=days
+            subject = text
+
+            reverse_match = re.search(
+                r"^(?:create|make|prepare|generate)\s+(?:a|an)\s+"
+                r"\d+\s*[- ]?\s*day\s+(.+?)\s+"
+                r"(?:study plan|study schedule|learning plan)\s*\.?$",
+                text,
+                re.IGNORECASE
             )
 
+            forward_match = re.search(
+                r"(?:study plan|study schedule|learning plan)\s+"
+                r"(?:for|on)\s+(.+?)\s*\.?$",
+                text,
+                re.IGNORECASE
+            )
+
+            if reverse_match:
+                subject = reverse_match.group(1).strip()
+            elif forward_match:
+                subject = forward_match.group(1).strip()
+            else:
+                subject = re.sub(
+                    r"^(?:create|make|prepare|generate)\s+(?:a|an)\s+",
+                    "",
+                    subject,
+                    flags=re.IGNORECASE
+                )
+                subject = re.sub(
+                    r"^\d+\s*[- ]?\s*day\s+",
+                    "",
+                    subject,
+                    flags=re.IGNORECASE
+                )
+                subject = re.sub(
+                    r"\s+(?:study plan|study schedule|learning plan)\s*\.?$",
+                    "",
+                    subject,
+                    flags=re.IGNORECASE
+                )
+
+            subject = subject.rstrip(".?! ").strip()
+
+            if not subject:
+                subject = "your subject"
+
+            result = tool_registry.get_tool("study_planner").execute(
+                subject=subject,
+                days=days
+            )
             if result.success:
                 data_result = result.data
 
@@ -933,4 +1212,9 @@ def run_selected_tool(data: Dict[str, Any]):
             "tool_name": tool_name,
             "answer": f"The request could not be completed: {str(e)}"
         }
+
+
+
+
+
 

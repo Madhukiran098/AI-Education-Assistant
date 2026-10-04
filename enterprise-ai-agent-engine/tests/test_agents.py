@@ -57,3 +57,22 @@ def test_decision_agent():
 
     assert result["topic"] != ""
     assert len(result["decision"]) > 0
+
+
+def test_decision_agent_mpc_guidance():
+    agent = DecisionAgent()
+
+    result = agent.make_decision(
+        {
+            "topic": "Best career after MPC with 85% marks",
+            "analysis": "Research findings for an MPC student.",
+        },
+        m1_score=85,
+        career_query="Best career after MPC with 85% marks",
+    )
+
+    decision = result["decision"]
+    assert "Top 3 Career Recommendations (MPC)" in decision
+    assert "Recommended Colleges from the Admin Catalog" in decision
+    assert "Relevant Entrance Examinations" in decision
+    assert "Four-Year Career Roadmap" in decision
