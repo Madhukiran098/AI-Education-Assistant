@@ -1,6 +1,6 @@
 # Milestones 1-5: Execution Status
 
-## M1-M5 Application Map
+## M1-M4 Application Map
 
 - M1 foundational agent page and M2 Tools Hub are in the combined Streamlit app at `http://localhost:8503`.
 - The M1 page displays four foundational agents: Planner, Research, Analysis, and Decision. M3 adds the Business Coordinator to its separate five-agent LangGraph workflow.

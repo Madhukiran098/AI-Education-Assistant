@@ -49,15 +49,6 @@ The platform contains **9 registered tools: 5 active and 4 inactive/planned**.
 - Career trends and communication logs
 - ₹5,000/year college subscription model
 
-### M5 – Enterprise API, Dashboard & Deployment
-- Enterprise FastAPI API layer
-- Streamlit dashboards
-- Workflow services
-- Monitoring support
-- Validation and tool execution endpoints
-- History and statistics endpoints
-- Docker deployment configuration
-
 ## Backend API
 
 FastAPI: http://127.0.0.1:8002

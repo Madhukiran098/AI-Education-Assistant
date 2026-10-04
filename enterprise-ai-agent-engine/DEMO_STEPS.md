@@ -1,4 +1,4 @@
-# M1-M5 Demo Recording Steps
+# M1-M4 Demo Recording Steps
 
 ## Before Recording
 
