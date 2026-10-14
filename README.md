@@ -8,46 +8,45 @@ The platform uses four specialized agents: Planner, Research, Analysis, and Deci
 
 ## Milestones
 
-### M1 – Agent Environment Setup & Foundation Development
-- Multi-agent architecture
-- Planner, Research, Analysis and Decision agents
-- Streamlit dashboard
-- FastAPI backend foundation
+### M1 - Student Platform and Agent Foundation
+- Existing Streamlit student application with login, student profile, and AI Assistant experience.
+- Foundational Planner, Research, Analysis, and Decision agents.
+- Student chat and related guidance flows remain part of the existing project.
 
-### M2 – Tool Integration & Intelligent Action Execution
+### M2 - Tool Integration and Intelligent Execution
+- FastAPI backend and workflow-based request handling.
+- Tool registry and selection logic for study planning, data retrieval, and calculations.
+- Automated tests for API behavior, request validation, tool selection, and workflow execution.
 
-The platform contains **9 registered tools: 5 active and 4 inactive/planned**.
+#### Current Student Chatbot Tool Registry
 
-| Tool | Status |
+The current registry registers these three tools:
+
+| Tool key | Purpose |
 |---|---|
-| Communication | Active |
-| Data Retrieval | Active |
-| Data Validation | Active |
-| Report Generation | Active |
-| Study Planner | Active |
-| Calculation | Inactive / Planned |
-| Web Search | Inactive / Planned |
-| Email | Inactive / Planned |
-| Calendar | Inactive / Planned |
+| `data_retrieval` | Retrieve relevant data |
+| `study_planner` | Support study-plan requests |
+| `calculation` | Handle calculation requests |
 
-### M3 – Agent Coordination & Memory Management
-- Personalized career guidance
-- Career research and analysis
-- Preview recommendations
-- Personalized roadmap generation
-- Student memory
-- Purchase verification and access control
-- ₹150 personalized roadmap purchase
+Other tool classes are imported in the registry module but are not registered by its current `_register_tools()` method. Registration does not by itself guarantee that every tool is enabled.
 
-### M4 – Workflow Automation & Decision Intelligence
-- College Admin Dashboard
-- Student statistics
-- Free vs paid student analysis
-- Conversion and revenue analysis
-- Response-time and failure-rate monitoring
-- College catalog management
-- Career trends and communication logs
-- ₹5,000/year college subscription model
+### M3 - Career Guidance and Memory
+- Career-guidance workflow with planning, research, analysis, and decision stages.
+- Career roadmap generation and retrieval of previous guidance where supported by the existing implementation.
+- SQLite-backed student and career data, with ChromaDB-backed context retrieval where configured.
+- The Rs. 150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
+
+### M4 - College Administration, Analytics, and Monitoring
+- College administration and catalogue management through the existing admin components.
+- SQLite-backed catalogue access shared with career research.
+- Workflow monitoring and API health endpoints.
+- Existing project tests include college administration, API, and performance smoke coverage.
+
+### Current Integration Notes
+- The intended student experience is the combined chatbot in `website/app.py`.
+- Supporting API, workflow, and legacy Streamlit entry points remain in the repository; their presence does not mean they have all been merged or removed.
+- Keep `college_admin.db` and `student_data.db` separate. Do not seed, overwrite, or reset existing catalogue or student records during documentation or UI integration work.
+- Local verification is not proof of production or cloud deployment.
 
 ## Backend API
 
@@ -63,9 +62,10 @@ Main endpoints:
 
 ## Applications
 
-- M1/M2 Student Platform: http://localhost:8503
-- M3 Student Career Guidance: http://localhost:8501
-- M4 College Admin Dashboard: http://localhost:8502
+- **Combined student interface:** `website/app.py` - the intended single-chatbot student experience.
+- **Supporting backend API:** `http://127.0.0.1:8002` when the FastAPI service is running.
+- **Legacy/supporting Streamlit entry points:** M3 student and college administration apps remain in the repository. Their presence does not mean they are all part of the active combined interface.
+- Local ports depend on which entry point is launched; do not assume every app is running simultaneously.
 
 ## Technology Stack
 
@@ -81,32 +81,38 @@ Main endpoints:
 
 Automated tests cover agents, APIs, tools, request validation, M3 workflows, college administration, performance, and selected tool APIs.
 
-**Latest validation: 18 passed, 2 warnings.**
+**Latest local test run: 18 passed, 2 dependency deprecation warnings.**
 
 Run:
 
-`powershell
+```powershell
 python -m pytest tests\ -q
-`
+```
 
 ## Project Structure
 
-`	ext
-enterprise-ai-agent-engine/
-├── agents/
-├── api/
-├── tools/
-├── workflows/
-├── tests/
-├── streamlit_app.py
-├── m3_student_app.py
-├── college_admin_dashboard.py
-├── memory_store.py
-├── career_rag_memory.py
-├── requirements.txt
-├── Dockerfile
-└── docker-compose.yml
-`
+```text
+AI-Education-Assistant/
+  website/
+    app.py
+    shared_database.py
+  enterprise-ai-agent-engine/
+    agents/
+    api/
+    tools/
+    workflows/
+    tests/
+    streamlit_app.py
+    m3_student_app.py
+    college_admin_dashboard.py
+    memory_store.py
+    career_rag_memory.py
+    requirements.txt
+    Dockerfile
+    docker-compose.yml
+  requirements.txt
+  README.md
+```
 
 ## Documentation
 
@@ -123,3 +129,4 @@ Evidence screenshots are included for the completed milestones.
 **Madhukiran098**
 
 AI Agent Coordination & Decision Engine
+

@@ -1,17 +1,19 @@
 # Milestones 1-5: Execution Status
 
-## M1-M4 Application Map
+## M1-M4 Application and Integration Map
 
-- M1 foundational agent page and M2 Tools Hub are in the combined Streamlit app at `http://localhost:8503`.
-- The M1 page displays four foundational agents: Planner, Research, Analysis, and Decision. M3 adds the Business Coordinator to its separate five-agent LangGraph workflow.
-- M2's Tools Hub lists nine registered tools. Five tools are currently active and four remain inactive/planned.
-- M3 Career Guidance runs separately at `http://localhost:8501`; M4 College Admin runs at `http://localhost:8502`; the FastAPI service runs at `http://localhost:8002`.
-- M2 and M3 are decoupled. M3 does not import M2 requests. Its student identity/profile fields currently use demo defaults rather than a live authenticated M1 session handoff.
-- M3 Research reads the same SQLite college catalog managed by the M4 admin dashboard.
+- The intended student experience is the combined chatbot in `website/app.py`.
+- The foundational agent set is Planner, Research, Analysis, and Decision.
+- The current student chatbot tool registry registers three tools: `data_retrieval`, `study_planner`, and `calculation`. Other tool classes may exist in the repository without being registered by this chatbot registry.
+- The FastAPI service provides supporting workflow and tool endpoints when started.
+- Separate M3 student and college administration Streamlit entry points remain in the repository as supporting/legacy applications; do not assume they have all been merged into the combined chatbot.
+- The existing M3 workflow uses a separate LangGraph career-guidance flow. A live authenticated M1 session handoff should not be assumed unless verified in the current implementation.
+- M3 Research uses the SQLite college catalogue managed through the existing administration components.
+- Keep `college_admin.db` and `student_data.db` separate. Do not reset, reseed, or overwrite existing catalogue or student records as part of documentation or UI integration.
 
-## Final Verification: 2026-10-03
+## Historical Verification Record: 2026-10-03
 
-The live M3 API and Streamlit application were verified using the request `Best career options after MPC with 85% marks`.
+The following historical record documents checks performed on 2026-10-03; it is not a fresh verification of the current configuration. At that time, the M3 API and Streamlit application were tested using the request `Best career options after MPC with 85% marks`.
 
 - `POST /career/run` returned `success: true` and `workflow_status: free_payment_required` for an isolated final-verification student identity.
 - At the initial verification, `POST /tools/execute` returned the original three catalog entries (CBIT Hyderabad, JNTU Hyderabad, OU Hyderabad). The catalog was subsequently extended with MGIT Hyderabad CSE; the current seeded catalog has four entries.
@@ -116,7 +118,7 @@ Run the focused API, workflow, and performance checks with:
 
 The Compose setup is a reproducible local/container deployment target. It is not evidence that the service has been deployed to a cloud account. Cloud rollout still requires a selected provider, account credentials, a managed persistent relational database and vector store, TLS and domain configuration, secrets management, backups, and an authentication/authorization policy.
 
-Docker verification for this submission was not executable in the available environment: the Docker CLI/daemon is not installed. The Compose YAML was parsed successfully, but that does not substitute for an image build or container health check. Run `docker compose up --build` on a machine with Docker Desktop installed and running before container acceptance.
+Docker verification was not completed in the recorded environment because the Docker CLI/daemon was unavailable. Recheck Docker availability before claiming a successful image build or container health check. The Compose YAML was parsed successfully, but that does not substitute for an image build or container health check. Run `docker compose up --build` on a machine with Docker Desktop installed and running before container acceptance.
 
 Do not expose the current API or demo payment workflow directly to the public internet. The current college subscription/payment verification and sample student identities are demonstration logic. Before production, add identity and tenant authorization, payment-provider verification, request rate limits, durable managed storage, and load testing with an agreed latency/concurrency target. Local SQLite and file-backed ChromaDB should not be shared by horizontally scaled replicas.
 
