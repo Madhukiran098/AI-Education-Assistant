@@ -124,8 +124,52 @@ AI-Education-Assistant/
 
 Evidence screenshots are included for the completed milestones.
 
-## Author
+## Project Objective
 
+The objective of the AI Education & Career Guidance Assistant is to help students understand their skills, explore suitable education and career paths, compare college options, and plan their learning journey through an AI-assisted interface.
+
+## Student Experience: One Chatbot
+
+The intended student experience brings education and career assistance together in one chatbot. The Planner, Research, Analysis, and Decision agents coordinate behind the scenes; students receive a consolidated response instead of needing to interact with each agent separately.
+
+### Student Flow
+
+1. **Login and profile creation** — collect the student's name and email and save the profile persistently before proceeding.
+2. **Ask a question** — the student asks about studies, skills, careers, exams, or colleges.
+3. **Understand the request** — the backend routes the request to the appropriate workflow.
+4. **Research and analysis** — the agents process relevant information, assess the student's requirements, and prepare recommendations.
+5. **Display guidance** — the chatbot presents a consolidated answer with suitable options and explanations.
+6. **Personalised roadmap** — eligible students can use the demonstration purchase flow to access the personalised roadmap.
+7. **Save and revisit** — supported profile, history, and roadmap features use persistent storage.
+8. **Administration and analytics** — authorised administrators manage college catalogue records and review available statistics.
+
+### Request Routing
+
+| Request type | Backend route |
+| --- | --- |
+| Study planning and study-tool requests | `POST /tools/run-selected` |
+| Career guidance requests | `POST /career/run` |
+| Other general requests | `POST /run` |
+
+These routes describe the intended routing contract. Verify the active endpoint implementation before treating every route as integrated into the chatbot.
+
+## Milestone Progression
+
+- **M1 — Foundation:** core agents, student interface, and FastAPI foundation.
+- **M2 — Tool integration:** request routing, tool selection, execution, and consolidated responses.
+- **M3 — Personalised career guidance:** career research, recommendations, memory, and roadmap generation.
+- **M4 — Administration and analytics:** college catalogue management, student/business statistics, monitoring, and reporting.
+
+The milestone progression describes how the project evolves toward the integrated experience. Existing standalone pages or workflows should be identified as such until their integration is verified.
+
+## Data and Payment Notes
+
+- Keep `college_admin.db` and `student_data.db` separate; do not overwrite existing college catalogue or student records when documenting or testing the project.
+- College fees, placement figures, and other catalogue values are stored data and should not be presented as independently verified facts unless separately confirmed.
+- The ₹150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
+- Distinguish implemented and tested features from planned or pending integration.
+
+## Author
 **Madhukiran098**
 
 AI Agent Coordination & Decision Engine

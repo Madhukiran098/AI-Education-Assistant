@@ -125,3 +125,43 @@ Do not expose the current API or demo payment workflow directly to the public in
 ## Performance Follow-up
 
 `tests/test_performance_smoke.py` protects the local catalog research path from severe regressions. Before cloud acceptance, run a load test against the deployed environment, set explicit p95 latency and concurrency objectives, and compare CPU, memory, database latency, and workflow traces under expected peak load.
+
+## Integrated Student Experience and Target Flow
+
+### Intended Student Journey
+
+The target experience is one student-facing chatbot integrated into the existing `website/app.py` AI Assistant section. It should preserve the existing login, student history, profile data, payment flow, and other project features.
+
+1. The student logs in and creates or completes a profile using their name and email.
+2. The student submits an education, study-planning, career, or college question in the chatbot.
+3. The backend identifies the request category and sends it to the appropriate workflow.
+4. Planner, Research, Analysis, and Decision coordinate internally. The student sees a consolidated answer rather than separate agent outputs.
+5. Career guidance can use student context, research, and analysis to present recommendations and a roadmap preview.
+6. The existing demonstration purchase flow controls access to the paid roadmap experience. The ₹150 amount is simulated and must not be described as a real payment-provider transaction.
+7. Supported history and memory features allow prior information to be revisited.
+8. The separate College Admin Dashboard manages catalogue information and provides available administrative statistics.
+
+### Request Routing Contract
+
+| Request category | Intended endpoint |
+| --- | --- |
+| Study-tool requests | `POST /tools/run-selected` |
+| Career guidance | `POST /career/run` |
+| Other general requests | `POST /run` |
+
+Confirm that each endpoint is called correctly by the integrated chatbot before marking the complete routing flow as verified.
+
+### Milestone Relationship
+
+- **M1:** agent foundation, profile and student-interface foundation.
+- **M2:** tool registry, request classification, routing, and execution.
+- **M3:** personalised career research, analysis, memory, roadmap preview, and simulated purchase access.
+- **M4:** college catalogue administration, analytics, and API monitoring.
+
+### Integration and Data Integrity
+
+The single-chatbot experience is the intended integration target. Any existing standalone Streamlit pages or workflows should remain documented as separate until their integration is confirmed by code inspection and testing.
+
+Keep `college_admin.db` and `student_data.db` separate. Do not seed, replace, or reset the existing college catalogue or student records as part of documentation changes.
+
+The ₹150 roadmap purchase is a simulated academic-project flow. It is not evidence of a verified real payment. College fees and placement values should be described as catalogue data unless independently verified.
