@@ -1,197 +1,263 @@
-﻿# AI Agent Coordination & Decision Engine
+# AI Education & Career Guidance Assistant
 
-> A multi-agent AI education and career guidance platform for intelligent decision support, tool integration, personalized career guidance, memory management, workflow automation, and college analytics.
+**Project Title:** AI Agent Coordination & Decision Engine
 
-## Project Overview
+An AI-powered education and career guidance platform that helps students analyze their academic profiles, understand their skills, explore suitable careers, discover relevant colleges, and access personalized career roadmaps.
 
-The platform uses four specialized agents: Planner, Research, Analysis, and Decision. It provides student education and career support together with college administration and business analytics.
+The platform integrates a Streamlit student application, FastAPI backend, specialized AI agents, tool execution, data storage, and a college administration dashboard into one project.
 
-## Official Project Scope
+##  Core Capabilities
 
-**Project title:** AI Agent Coordination & Decision Engine
+- **Student Login:** Provides the entry point for students to access the application.
+- **Profile Analysis:** Analyzes student-provided academic details, skills, and career interests.
+- **AI Assistant Chatbot:** Supports student questions about education, studies, skills, and career opportunities.
+- **Career Analytics:** Helps students understand skill alignment with potential career paths.
+- **Career Guidance:** Provides career suggestions and recommended learning priorities.
+- **College Recommendations:** Helps students explore colleges and programmes using available catalogue information.
+- **Personalized Career Roadmap:** Provides roadmap previews and a purchase/unlock flow for full roadmap access.
+- **College Admin Dashboard:** Supports college catalogue management through the existing administration interface.
+- **Multi-Agent Workflow:** Organizes planning, research, analysis, and decision-making tasks.
+- **API and Monitoring:** Provides backend endpoints and supporting monitoring capabilities.
 
-**Aim:** Develop coordinated specialized AI agents for enterprise workflows, information retrieval, analysis, decision support, task execution and response generation using LLMs, orchestration frameworks, memory and tool integrations.
+The roadmap purchase uses a simulated ₹150 academic project payment flow; it is not represented as a live payment gateway.
 
-**Expected outcomes:** Multi-Agent Coordination Framework; Intelligent Decision Support; Tool & System Integration; Shared Knowledge & Memory Management; Workflow Automation Platform; Enterprise API Layer.
+##  System Architecture
+```mermaid
+flowchart TD
+    A[Student Login] --> B[Student Profile]
+    B --> C[Profile Analysis]
+    C --> D[AI Assistant Chatbot]
+
+    D --> E[Request Routing]
+    E --> F[Study and General Requests]
+    E --> G[Career and Profile Requests]
+
+    F --> H[Tool Selection and Execution]
+    G --> I[Planner Agent]
+    I --> J[Research Agent]
+    J --> K[Analysis Agent]
+    K --> L[Decision Agent]
+
+    H --> M[Response Generation]
+    L --> N[Career and College Recommendations]
+    N --> O[Career Guidance]
+    N --> P[Roadmap Preview]
+    P --> Q[Simulated Purchase and Unlock]
+    Q --> R[Full Roadmap Access]
+    O --> M
+    R --> M
+
+    S[College Admin Dashboard] --> T[College Catalogue Database]
+    U[Student Data Database] --- C
+    V[FastAPI Backend] --- E
+    V --- H
+    V --- I
+```
+
+### Workflow Explanation
+
+1. **Student access:** The student opens the application and provides relevant profile information.
+2. **Profile analysis:** The application evaluates the available academic details, skills, and career interests.
+3. **Question processing:** The AI assistant receives student questions and routes supported requests through the appropriate backend workflow.
+4. **Agent coordination:** Planning, research, analysis, and decision components process requests according to the implemented workflow.
+5. **Recommendations:** The application presents relevant career guidance and college information.
+6. **Roadmap access:** Students can preview the roadmap and use the simulated purchase/unlock flow for full access.
+7. **Administration:** The college administration interface manages catalogue information separately from student data.
+
+##  Multi-Agent Architecture
+
+| Component            | Responsibility                                                       |
+| -------------------- | -------------------------------------------------------------------- |
+| Planner Agent        | Organizes incoming requests and identifies the appropriate workflow. |
+| Research Agent       | Retrieves relevant information from available sources.               |
+| Analysis Agent       | Evaluates retrieved information and develops structured findings.    |
+| Decision Agent       | Formulates recommendations and next steps.                           |
+| Business Coordinator | Coordinates supported business-oriented workflow operations.         |
+| Response Generator   | Formats workflow results into responses.                             |
+
+The agents operate within the backend workflow. Students use the integrated assistant rather than needing separate chat interfaces for individual agents.
+
+##  Integrated Tools
+
+| Tool             | Purpose                                                      |
+| ---------------- | ------------------------------------------------------------ |
+| `data_retrieval` | Retrieves information from supported data sources.           |
+| `study_planner`  | Supports structured study planning.                          |
+| `calculation`    | Executes supported calculation tasks.                        |
+| Tool Registry    | Maintains the registered tools available to the application. |
+| Tool Selector    | Supports selecting tools for relevant requests.              |
+
+Other supporting components handle API execution, career workflows, memory, monitoring, and roadmap-related operations where implemented.
+
+##  Milestone & Requirements Verification
 
 ### Milestone 1 — Agent Environment Setup & Foundation Development
-Establish the development environment, LLM and orchestration foundations, agent architecture, prompting and workflows. Implement and test foundational agents and their interactions.
+
+**Work completed / project components:**
+
+- Established the Python-based application structure.
+- Developed the Streamlit application foundation.
+- Set up backend and agent-related modules.
+- Established the foundation for AI-assisted student interaction.
+
+**Evidence:** `website/app.py`, `enterprise-ai-agent-engine/api/main.py`, and the agent modules.
 
 ### Milestone 2 — Tool Integration & Intelligent Action Execution
-Integrate tools, APIs, databases and external knowledge sources. Support tool selection and execution, monitoring, validation and error handling.
+
+**Work completed / project components:**
+
+- Developed a tool registry and tool selection components.
+- Integrated study planning, data retrieval, and calculation tools.
+- Added backend endpoints for supported workflow and tool execution.
+- Established tool-based request processing.
+
+**Evidence:** `enterprise-ai-agent-engine/tools/`, `enterprise-ai-agent-engine/api/main.py`, and `enterprise-ai-agent-engine/workflows/workflow_v2.py`.
 
 ### Milestone 3 — Agent Coordination & Memory Management
-Coordinate Planning, Research, Analysis and Decision agents, including agent communication and short-term, long-term and shared memory capabilities where implemented.
 
-### Milestone 4 — Workflow Automation, Decision Intelligence, Enterprise API, Dashboard & Deployment
-Orchestrate workflows and automated execution, generate recommendations and responses, provide supported REST API and dashboard functionality, and address logging, deployment, scalability and performance monitoring.
+**Work completed / project components:**
 
-**Official schedule:** Weeks 1–2: Milestone 1; Weeks 3–4: Milestone 2; Weeks 5–6: Milestone 3; Weeks 7–8: Milestone 4 (deployment). This schedule does not imply that unfinished features or cloud deployment are complete.
+- Developed specialized planning, research, analysis, and decision components.
+- Organized multi-agent workflow execution.
+- Added memory-related components for supported context and persistence requirements.
+- Connected agent workflow functionality with education and career guidance use cases.
 
-## Implemented Application Features by Official Milestone
+**Evidence:** `enterprise-ai-agent-engine/agents/`, `enterprise-ai-agent-engine/workflows/workflow_v3.py`, and `enterprise-ai-agent-engine/memory_store.py`.
 
-### M1 - Student Platform and Agent Foundation
-- Existing Streamlit student application with login, student profile, and AI Assistant experience.
-- Foundational Planner, Research, Analysis, and Decision agents.
-- Student chat and related guidance flows remain part of the existing project.
+### Milestone 4 — Workflow Automation & Decision Intelligence + Enterprise API, Dashboard & Deployment
 
-### M2 - Tool Integration and Intelligent Execution
-- FastAPI backend and workflow-based request handling.
-- Tool registry and selection logic for study planning, data retrieval, and calculations.
-- Automated tests for API behavior, request validation, tool selection, and workflow execution.
+**Work completed / project components:**
 
-#### Current Student Chatbot Tool Registry
+- Developed career guidance and roadmap-related application functionality.
+- Added college administration dashboard components.
+- Provided FastAPI endpoints for supported backend operations.
+- Included monitoring and payment-flow components.
+- Prepared project documentation, evaluation materials, and submission checks.
 
-The current registry registers these three tools:
+**Evidence:** `enterprise-ai-agent-engine/api/main.py`, `enterprise-ai-agent-engine/college_admin_dashboard.py`, `enterprise-ai-agent-engine/college_dashboard.py`, and `enterprise-ai-agent-engine/monitoring.py`.
+ **Testing Status:** The project previously passed 18 automated tests with 0 failures. Two deprecation warnings were reported. These results confirm that the tested cases passed; they do not independently verify every end-to-end application flow or cloud deployment.
 
-| Tool key | Purpose |
-|---|---|
-| `data_retrieval` | Retrieve relevant data |
-| `study_planner` | Support study-plan requests |
-| `calculation` | Handle calculation requests |
+##  Technology Stack
 
-Other tool classes are imported in the registry module but are not registered by its current `_register_tools()` method. Registration does not by itself guarantee that every tool is enabled.
+| Layer             | Technology                                     |
+| ----------------- | ---------------------------------------------- |
+| Frontend          | Streamlit                                      |
+| Backend           | Python, FastAPI, Uvicorn                       |
+| Agent workflows   | Existing agent modules and workflow components |
+| Tool integration  | Python-based tool registry and selector        |
+| Data storage      | SQLite                                         |
+| Student data      | `student_data.db`                              |
+| College catalogue | `college_admin.db`                             |
+| Testing           | Pytest                                         |
+| Development       | Python virtual environment, PowerShell, Git    |
 
-### M3 - Career Guidance and Memory
-- Career-guidance workflow with planning, research, analysis, and decision stages.
-- Career roadmap generation and retrieval of previous guidance where supported by the existing implementation.
-- SQLite-backed student and career data, with ChromaDB-backed context retrieval where configured.
-- The Rs. 150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
-
-### M4 - College Administration, Analytics, and Monitoring
-- College administration and catalogue management through the existing admin components.
-- SQLite-backed catalogue access shared with career research.
-- Workflow monitoring and API health endpoints.
-- Existing project tests include college administration, API, and performance smoke coverage.
-
-### Current Integration Notes
-- The intended student experience is the combined chatbot in `website/app.py`.
-- Supporting API, workflow, and legacy Streamlit entry points remain in the repository; their presence does not mean they have all been merged or removed.
-- Keep `college_admin.db` and `student_data.db` separate. Do not seed, overwrite, or reset existing catalogue or student records during documentation or UI integration work.
-- Local verification is not proof of production or cloud deployment.
-
-## Backend API
-
-FastAPI: http://127.0.0.1:8002
-
-Main endpoints:
-- GET /health
-- POST /run
-- GET /tools
-- POST /tools/execute
-- GET /history
-- GET /statistics
-
-## Applications
-
-- **Combined student interface:** `website/app.py` - the intended single-chatbot student experience.
-- **Supporting backend API:** `http://127.0.0.1:8002` when the FastAPI service is running.
-- **Legacy/supporting Streamlit entry points:** M3 student and college administration apps remain in the repository. Their presence does not mean they are all part of the active combined interface.
-- Local ports depend on which entry point is launched; do not assume every app is running simultaneously.
-
-## Technology Stack
-
-- Backend: FastAPI
-- Frontend: Streamlit
-- Language: Python
-- Testing: Pytest
-- API: REST
-- Memory: Local persistent storage / vector memory
-- Deployment: Docker
-
-## Testing
-
-Automated tests cover agents, APIs, tools, request validation, M3 workflows, college administration, performance, and selected tool APIs.
-
-**Latest local test run: 18 passed, 2 dependency deprecation warnings.**
-
-Run:
-
-```powershell
-python -m pytest tests\ -q
+##  Repository Structure
 ```
-
-## Project Structure
-
-```text
 AI-Education-Assistant/
-  website/
-    app.py
-    shared_database.py
-  enterprise-ai-agent-engine/
-    agents/
-    api/
-    tools/
-    workflows/
-    tests/
-    streamlit_app.py
-    m3_student_app.py
-    college_admin_dashboard.py
-    memory_store.py
-    career_rag_memory.py
-    requirements.txt
-    Dockerfile
-    docker-compose.yml
-  requirements.txt
-  README.md
+├── README.md
+├── website/
+│   ├── app.py
+│   └── shared_database.py
+│
+├── enterprise-ai-agent-engine/
+│   ├── api/
+│   │   └── main.py
+│   ├── agents/
+│   │   ├── business_access_agent.py
+│   │   ├── business_coordinator_agent.py
+│   │   └── response_generator.py
+│   ├── tools/
+│   │   ├── study_planner_tool.py
+│   │   ├── tool_registry.py
+│   │   └── tool_selector.py
+│   ├── workflows/
+│   │   ├── workflow_v2.py
+│   │   └── workflow_v3.py
+│   ├── college_admin_dashboard.py
+│   ├── college_dashboard.py
+│   ├── memory_store.py
+│   ├── monitoring.py
+│   ├── payment_verification.py
+│   ├── PROJECT_USAGE_GUIDE.md
+│   ├── MILESTONE_3_4.md
+│   ├── EVALUATION_REPORT.md
+│   └── SUBMISSION_CHECKLIST.md
+│
+└── Supporting modules, tests,
+    configuration, and data files
 ```
 
-## Documentation
+**Database separation:** `student_data.db` and `college_admin.db` serve separate purposes and must remain separate. Existing catalogue entries and student records must be preserved.
 
-- PROJECT_USAGE_GUIDE.md
-- EVALUATION_REPORT.md
-- MILESTONE_3_4.md
-- SUBMISSION_CHECKLIST.md
-- M1_M2_M3_CONNECTION.md
+##  Local Setup & Quick Start
 
-Evidence screenshots are included for the completed milestones.
+### 1. Open the project
+```
+cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant"
+```
 
-## Project Objective
+### 2. Activate the existing virtual environment
+```
+.\.venv\Scripts\Activate.ps1
+```
 
-The objective of the AI Education & Career Guidance Assistant is to help students understand their skills, explore suitable education and career paths, compare college options, and plan their learning journey through an AI-assisted interface.
+### 3. Start the backend
 
-## Student Experience: One Chatbot
+Open a terminal:
+```
+cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant\enterprise-ai-agent-engine"
+python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8002
+```
 
-The intended student experience brings education and career assistance together in one chatbot. The Planner, Research, Analysis, and Decision agents coordinate behind the scenes; students receive a consolidated response instead of needing to interact with each agent separately.
+### 4. Start the Streamlit application
 
-### Student Flow
+Open a second terminal:
+```
+cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant"
+.\.venv\Scripts\Activate.ps1
+python -m streamlit run website/app.py --server.port 8501
+```
 
-1. **Login and profile creation** — collect the student's name and email and save the profile persistently before proceeding.
-2. **Ask a question** — the student asks about studies, skills, careers, exams, or colleges.
-3. **Understand the request** — the backend routes the request to the appropriate workflow.
-4. **Research and analysis** — the agents process relevant information, assess the student's requirements, and prepare recommendations.
-5. **Display guidance** — the chatbot presents a consolidated answer with suitable options and explanations.
-6. **Personalised roadmap** — eligible students can use the demonstration purchase flow to access the personalised roadmap.
-7. **Save and revisit** — supported profile, history, and roadmap features use persistent storage.
-8. **Administration and analytics** — authorised administrators manage college catalogue records and review available statistics.
+Open `http://localhost:8501` in your browser.
 
-### Request Routing
+Use the existing project configuration and installed dependencies. If the application uses different startup settings, follow its current configuration.
 
-| Request type | Backend route |
-| --- | --- |
-| Study planning and study-tool requests | `POST /tools/run-selected` |
-| Career guidance requests | `POST /career/run` |
-| Other general requests | `POST /run` |
+## 🧪 Testing and Verification
 
-These routes describe the intended routing contract. Verify the active endpoint implementation before treating every route as integrated into the chatbot.
+Run the available tests from the appropriate project directory:
+```
+python -m pytest -v
+```
 
-## Milestone Progression
+Verify the following before final submission:
 
-- **M1 — Foundation:** core agents, student interface, and FastAPI foundation.
-- **M2 — Tool integration:** request routing, tool selection, execution, and consolidated responses.
-- **M3 — Personalised career guidance:** career research, recommendations, memory, and roadmap generation.
-- **M4 — Administration and analytics:** college catalogue management, student/business statistics, monitoring, and reporting.
+- Student login and profile analysis.
+- AI assistant responses to career-related questions.
+- Career analytics and guidance.
+- College recommendations.
+- Roadmap preview and simulated purchase/unlock flow.
+- College catalogue management.
+- Supported backend API endpoints.
+- Preservation of existing database records.
 
-The milestone progression describes how the project evolves toward the integrated experience. Existing standalone pages or workflows should be identified as such until their integration is verified.
+Report the actual test results obtained during verification.
 
-## Data and Payment Notes
+##  Data and Payment Safety
 
-- Keep `college_admin.db` and `student_data.db` separate; do not overwrite existing college catalogue or student records when documenting or testing the project.
-- College fees, placement figures, and other catalogue values are stored data and should not be presented as independently verified facts unless separately confirmed.
-- The ₹150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
-- Distinguish implemented and tested features from planned or pending integration.
+- Keep `student_data.db` and `college_admin.db` separate.
+- Do not seed or overwrite the existing college catalogue without authorization.
+- Preserve existing student and payment-related records.
+- Describe the ₹150 purchase as a simulated academic project flow.
+- Do not claim production payment processing or cloud deployment unless independently verified.
 
-## Author
-**Madhukiran098**
+##  Project Documentation
 
-AI Agent Coordination & Decision Engine
+- `README.md` — project overview, architecture, milestones, and setup.
+- `PROJECT_USAGE_GUIDE.md` — application usage and demonstration instructions.
+- `MILESTONE_3_4.md` — milestone-related documentation.
+- `EVALUATION_REPORT.md` — recorded evaluation information.
+- `SUBMISSION_CHECKLIST.md` — submission verification checklist.
+
+##  Project Objective
+
+To develop an AI-powered education and career guidance platform that combines specialized AI agents, intelligent tool execution, student profile analysis, career decision support, college recommendations, and personalized roadmap access in one integrated application. The system aims to help students make informed academic and career decisions while providing a dedicated interface for college catalogue administration. plz update my github
