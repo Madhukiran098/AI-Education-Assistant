@@ -1,6 +1,6 @@
-#Project Title:** AI Agent Coordination & Decision Engine
+# Agent Coordination and Decision Engine
 
-*AI Education & Career Guidance Assistant
+## AI Education & Career Guidance Assistant
 
 An AI-powered education and career guidance platform that helps students analyze their academic profiles, understand their skills, explore suitable careers, discover relevant colleges, and access personalized career roadmaps.
 
@@ -22,6 +22,7 @@ The platform integrates a Streamlit student application, FastAPI backend, specia
 The roadmap purchase uses a simulated ₹150 academic project payment flow; it is not represented as a live payment gateway.
 
 ##  System Architecture
+
 ```mermaid
 flowchart TD
     A[Student Login] --> B[Student Profile]
@@ -66,26 +67,26 @@ flowchart TD
 
 ##  Multi-Agent Architecture
 
-| Component            | Responsibility                                                       |
-| -------------------- | -------------------------------------------------------------------- |
-| Planner Agent        | Organizes incoming requests and identifies the appropriate workflow. |
-| Research Agent       | Retrieves relevant information from available sources.               |
-| Analysis Agent       | Evaluates retrieved information and develops structured findings.    |
-| Decision Agent       | Formulates recommendations and next steps.                           |
-| Business Coordinator | Coordinates supported business-oriented workflow operations.         |
-| Response Generator   | Formats workflow results into responses.                             |
+| Component | Responsibility |
+|---|---|
+| Planner Agent | Organizes incoming requests and identifies the appropriate workflow. |
+| Research Agent | Retrieves relevant information from available sources. |
+| Analysis Agent | Evaluates retrieved information and develops structured findings. |
+| Decision Agent | Formulates recommendations and next steps. |
+| Business Coordinator | Coordinates supported business-oriented workflow operations. |
+| Response Generator | Formats workflow results into responses. |
 
 The agents operate within the backend workflow. Students use the integrated assistant rather than needing separate chat interfaces for individual agents.
 
 ##  Integrated Tools
 
-| Tool             | Purpose                                                      |
-| ---------------- | ------------------------------------------------------------ |
-| `data_retrieval` | Retrieves information from supported data sources.           |
-| `study_planner`  | Supports structured study planning.                          |
-| `calculation`    | Executes supported calculation tasks.                        |
-| Tool Registry    | Maintains the registered tools available to the application. |
-| Tool Selector    | Supports selecting tools for relevant requests.              |
+| Tool | Purpose |
+|---|---|
+| `data_retrieval` | Retrieves information from supported data sources. |
+| `study_planner` | Supports structured study planning. |
+| `calculation` | Executes supported calculation tasks. |
+| Tool Registry | Maintains the registered tools available to the application. |
+| Tool Selector | Supports selecting tools for relevant requests. |
 
 Other supporting components handle API execution, career workflows, memory, monitoring, and roadmap-related operations where implemented.
 
@@ -100,7 +101,7 @@ Other supporting components handle API execution, career workflows, memory, moni
 - Set up backend and agent-related modules.
 - Established the foundation for AI-assisted student interaction.
 
-**Evidence: `website/app.py`, `enterprise-ai-agent-engine/api/main.py`, and the agent modules.
+**Evidence:** `website/app.py`, `enterprise-ai-agent-engine/api/main.py`, and the agent modules.
 
 ### Milestone 2 — Tool Integration & Intelligent Action Execution
 
@@ -111,7 +112,7 @@ Other supporting components handle API execution, career workflows, memory, moni
 - Added backend endpoints for supported workflow and tool execution.
 - Established tool-based request processing.
 
-**Evidence: `enterprise-ai-agent-engine/tools/`, `enterprise-ai-agent-engine/api/main.py`, and `enterprise-ai-agent-engine/workflows/workflow_v2.py`.
+**Evidence:** `enterprise-ai-agent-engine/tools/`, `enterprise-ai-agent-engine/api/main.py`, and `enterprise-ai-agent-engine/workflows/workflow_v2.py`.
 
 ### Milestone 3 — Agent Coordination & Memory Management
 
@@ -122,7 +123,7 @@ Other supporting components handle API execution, career workflows, memory, moni
 - Added memory-related components for supported context and persistence requirements.
 - Connected agent workflow functionality with education and career guidance use cases.
 
-**Evidence: `enterprise-ai-agent-engine/agents/`, `enterprise-ai-agent-engine/workflows/workflow_v3.py`, and `enterprise-ai-agent-engine/memory_store.py`.
+**Evidence:** `enterprise-ai-agent-engine/agents/`, `enterprise-ai-agent-engine/workflows/workflow_v3.py`, and `enterprise-ai-agent-engine/memory_store.py`.
 
 ### Milestone 4 — Workflow Automation & Decision Intelligence + Enterprise API, Dashboard & Deployment
 
@@ -134,26 +135,27 @@ Other supporting components handle API execution, career workflows, memory, moni
 - Included monitoring and payment-flow components.
 - Prepared project documentation, evaluation materials, and submission checks.
 
-**Evidence: `enterprise-ai-agent-engine/api/main.py`, `enterprise-ai-agent-engine/college_admin_dashboard.py`, `enterprise-ai-agent-engine/college_dashboard.py`, and `enterprise-ai-agent-engine/monitoring.py`.
- 
- **Testing Status: The project previously passed 18 automated tests with 0 failures. Two deprecation warnings were reported. These results confirm that the tested cases passed; they do not independently verify every end-to-end application flow or cloud deployment.
+**Evidence:** `enterprise-ai-agent-engine/api/main.py`, `enterprise-ai-agent-engine/college_admin_dashboard.py`, `enterprise-ai-agent-engine/college_dashboard.py`, and `enterprise-ai-agent-engine/monitoring.py`.
+
+**Testing Status:** The project previously passed 18 automated tests with 0 failures. Two deprecation warnings were reported. These results confirm that the tested cases passed; they do not independently verify every end-to-end application flow or cloud deployment.
 
 ##  Technology Stack
 
-| Layer             | Technology                                     |
-| ----------------- | ---------------------------------------------- |
-| Frontend          | Streamlit                                      |
-| Backend           | Python, FastAPI, Uvicorn                       |
-| Agent workflows   | Existing agent modules and workflow components |
-| Tool integration  | Python-based tool registry and selector        |
-| Data storage      | SQLite                                         |
-| Student data      | `student_data.db`                              |
-| College catalogue | `college_admin.db`                             |
-| Testing           | Pytest                                         |
-| Development       | Python virtual environment, PowerShell, Git    |
+| Layer | Technology |
+|---|---|
+| Frontend | Streamlit |
+| Backend | Python, FastAPI, Uvicorn |
+| Agent workflows | Existing agent modules and workflow components |
+| Tool integration | Python-based tool registry and selector |
+| Data storage | SQLite |
+| Student data | `student_data.db` |
+| College catalogue | `college_admin.db` |
+| Testing | Pytest |
+| Development | Python virtual environment, PowerShell, Git |
 
 ##  Repository Structure
-```
+
+```text
 AI-Education-Assistant/
 ├── README.md
 ├── website/
@@ -193,19 +195,22 @@ AI-Education-Assistant/
 ##  Local Setup & Quick Start
 
 ### 1. Open the project
-```
+
+```powershell
 cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant"
 ```
 
 ### 2. Activate the existing virtual environment
-```
+
+```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
 ### 3. Start the backend
 
 Open a terminal:
-```
+
+```powershell
 cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant\enterprise-ai-agent-engine"
 python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8002
 ```
@@ -213,7 +218,8 @@ python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8002
 ### 4. Start the Streamlit application
 
 Open a second terminal:
-```
+
+```powershell
 cd "C:\Users\Madhu Kiran\AI Assistance Project\AI-Education-Assistant"
 .\.venv\Scripts\Activate.ps1
 python -m streamlit run website/app.py --server.port 8501
@@ -226,7 +232,8 @@ Use the existing project configuration and installed dependencies. If the applic
 ##  Testing and Verification
 
 Run the available tests from the appropriate project directory:
-```
+
+```powershell
 python -m pytest -v
 ```
 
@@ -261,4 +268,4 @@ Report the actual test results obtained during verification.
 
 ##  Project Objective
 
-To develop an AI-powered education and career guidance platform that combines specialized AI agents, intelligent tool execution, student profile analysis, career decision support, college recommendations, and personalized roadmap access in one integrated application. The system aims to help students make informed academic and career decisions while providing a dedicated interface for college catalogue administration. plz update my github
+To develop an AI-powered education and career guidance platform that combines specialized AI agents, intelligent tool execution, student profile analysis, career decision support, college recommendations, and personalized roadmap access in one integrated application. The system aims to help students make informed academic and career decisions while providing a dedicated interface for college catalogue administration.
