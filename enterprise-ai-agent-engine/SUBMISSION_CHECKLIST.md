@@ -1,4 +1,4 @@
-# M1-M4 Final Submission Checklist
+﻿# M1-M4 Final Submission Checklist
 
 ## Milestone 1: Agent Foundation
 
@@ -30,7 +30,7 @@
 
 ## Validation
 
-- [x] Full test suite: **18 passed**.
+- [x] Historical test run (2026-10-04): **18 passed**; rerun before claiming current test status.
 - [x] Python diagnostics: **0 Pylance errors** in the project at final verification.
 - [x] `docker-compose.yml` parses successfully and contains the API, student UI, and college-admin services.
 - [ ] Docker image build and container startup: **not tested** because Docker CLI/daemon is unavailable in this environment; run `docker compose up --build` on a machine with Docker Desktop installed and running.
@@ -44,7 +44,7 @@
 - [x] [Data Retrieval and Decision Agent roadmap](evidence_data_retrieval_roadmap.png)
 - [x] [College Admin analytics](evidence_college_admin_dashboard.png)
 - [x] [College Catalog CRUD](evidence_college_catalog_crud.png)
-- [x] Recording sequence documented in [DEMO_STEPS.md](DEMO_STEPS.md).
+- [x] Recording sequence documented in [PROJECT_USAGE_GUIDE.md](PROJECT_USAGE_GUIDE.md).
 
 ## Submission Notes
 
@@ -53,4 +53,3 @@
 - M2 and M3 are separate user flows. M3 currently uses the configured demo identity/profile defaults; an authenticated M1 login profile is not currently passed into the M3 workflow.
 - M2's Tools Hub is a catalog of nine registered tools. Five are currently active and four remain inactive/planned. Do not describe all nine as simultaneously available in the current UI.
 - Cloud deployment is not represented as complete. See [MILESTONE_3_4.md](MILESTONE_3_4.md) for the deployment readiness notes and screenshots.
-

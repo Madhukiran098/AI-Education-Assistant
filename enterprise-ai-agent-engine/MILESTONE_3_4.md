@@ -1,5 +1,44 @@
-# Milestones 1-5: Execution Status
+﻿# Milestones 1-4: Execution Status
 
+## Official Project Statement and Four-Milestone Scope
+
+**Project title:** AI Agent Coordination & Decision Engine
+
+**Aim:** Develop coordinated specialized AI agents for enterprise workflows, information retrieval, analysis, decision support, task execution, and response generation using LLMs, orchestration frameworks, memory, and tool integrations.
+
+### Expected Outcomes
+
+1. Multi-Agent Coordination Framework
+2. Intelligent Decision Support
+3. Tool & System Integration
+4. Shared Knowledge & Memory Management
+5. Workflow Automation Platform
+6. Enterprise API Layer
+
+### Milestone 1 — Agent Environment Setup & Foundation Development
+
+Establish the development environment, LLM and orchestration framework, architecture, prompting and workflows, foundational agents, and initial interaction and testing.
+
+### Milestone 2 — Tool Integration & Intelligent Action Execution
+
+Integrate custom tools, APIs, databases, and external knowledge sources. Implement tool selection and execution, monitoring, validation, and error handling.
+
+### Milestone 3 — Agent Coordination & Memory Management
+
+Coordinate specialized Planning, Research, Analysis, and Decision agents. Support agent communication and short-term, long-term, and shared memory where implemented.
+
+### Milestone 4 — Workflow Automation, Decision Intelligence, Enterprise API, Dashboard & Deployment
+
+Address complex workflow orchestration, automated execution, information processing, recommendations and response generation; REST API integration; monitoring dashboards; and deployment, logging, scalability, and performance. Cloud deployment and any unverified capabilities must remain identified as pending rather than completed.
+
+### Official Schedule
+
+- **Weeks 1–2:** Milestone 1 — Foundation Development
+- **Weeks 3–4:** Milestone 2 — Tool Integration
+- **Weeks 5–6:** Milestone 3 — Agent Coordination and Memory
+- **Weeks 7–8:** Milestone 4 — Workflow Automation, API, Dashboard, and Deployment
+
+---
 ## M1-M4 Application and Integration Map
 
 - The intended student experience is the combined chatbot in `website/app.py`.
@@ -137,7 +176,7 @@ The target experience is one student-facing chatbot integrated into the existing
 3. The backend identifies the request category and sends it to the appropriate workflow.
 4. Planner, Research, Analysis, and Decision coordinate internally. The student sees a consolidated answer rather than separate agent outputs.
 5. Career guidance can use student context, research, and analysis to present recommendations and a roadmap preview.
-6. The existing demonstration purchase flow controls access to the paid roadmap experience. The ₹150 amount is simulated and must not be described as a real payment-provider transaction.
+6. The existing demonstration purchase flow controls access to the paid roadmap experience. The â‚¹150 amount is simulated and must not be described as a real payment-provider transaction.
 7. Supported history and memory features allow prior information to be revisited.
 8. The separate College Admin Dashboard manages catalogue information and provides available administrative statistics.
 
@@ -164,4 +203,4 @@ The single-chatbot experience is the intended integration target. Any existing s
 
 Keep `college_admin.db` and `student_data.db` separate. Do not seed, replace, or reset the existing college catalogue or student records as part of documentation changes.
 
-The ₹150 roadmap purchase is a simulated academic-project flow. It is not evidence of a verified real payment. College fees and placement values should be described as catalogue data unless independently verified.
+The â‚¹150 roadmap purchase is a simulated academic-project flow. It is not evidence of a verified real payment. College fees and placement values should be described as catalogue data unless independently verified.
