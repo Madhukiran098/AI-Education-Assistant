@@ -14,19 +14,19 @@ The platform uses four specialized agents: Planner, Research, Analysis, and Deci
 
 **Expected outcomes:** Multi-Agent Coordination Framework; Intelligent Decision Support; Tool & System Integration; Shared Knowledge & Memory Management; Workflow Automation Platform; Enterprise API Layer.
 
-### Milestone 1 â€” Agent Environment Setup & Foundation Development
+### Milestone 1 — Agent Environment Setup & Foundation Development
 Establish the development environment, LLM and orchestration foundations, agent architecture, prompting and workflows. Implement and test foundational agents and their interactions.
 
-### Milestone 2 â€” Tool Integration & Intelligent Action Execution
+### Milestone 2 — Tool Integration & Intelligent Action Execution
 Integrate tools, APIs, databases and external knowledge sources. Support tool selection and execution, monitoring, validation and error handling.
 
-### Milestone 3 â€” Agent Coordination & Memory Management
+### Milestone 3 — Agent Coordination & Memory Management
 Coordinate Planning, Research, Analysis and Decision agents, including agent communication and short-term, long-term and shared memory capabilities where implemented.
 
-### Milestone 4 â€” Workflow Automation, Decision Intelligence, Enterprise API, Dashboard & Deployment
+### Milestone 4 — Workflow Automation, Decision Intelligence, Enterprise API, Dashboard & Deployment
 Orchestrate workflows and automated execution, generate recommendations and responses, provide supported REST API and dashboard functionality, and address logging, deployment, scalability and performance monitoring.
 
-**Official schedule:** Weeks 1â€“2: Milestone 1; Weeks 3â€“4: Milestone 2; Weeks 5â€“6: Milestone 3; Weeks 7â€“8: Milestone 4 (deployment). This schedule does not imply that unfinished features or cloud deployment are complete.
+**Official schedule:** Weeks 1–2: Milestone 1; Weeks 3–4: Milestone 2; Weeks 5–6: Milestone 3; Weeks 7–8: Milestone 4 (deployment). This schedule does not imply that unfinished features or cloud deployment are complete.
 
 ## Implemented Application Features by Official Milestone
 
@@ -156,14 +156,14 @@ The intended student experience brings education and career assistance together 
 
 ### Student Flow
 
-1. **Login and profile creation** â€” collect the student's name and email and save the profile persistently before proceeding.
-2. **Ask a question** â€” the student asks about studies, skills, careers, exams, or colleges.
-3. **Understand the request** â€” the backend routes the request to the appropriate workflow.
-4. **Research and analysis** â€” the agents process relevant information, assess the student's requirements, and prepare recommendations.
-5. **Display guidance** â€” the chatbot presents a consolidated answer with suitable options and explanations.
-6. **Personalised roadmap** â€” eligible students can use the demonstration purchase flow to access the personalised roadmap.
-7. **Save and revisit** â€” supported profile, history, and roadmap features use persistent storage.
-8. **Administration and analytics** â€” authorised administrators manage college catalogue records and review available statistics.
+1. **Login and profile creation** — collect the student's name and email and save the profile persistently before proceeding.
+2. **Ask a question** — the student asks about studies, skills, careers, exams, or colleges.
+3. **Understand the request** — the backend routes the request to the appropriate workflow.
+4. **Research and analysis** — the agents process relevant information, assess the student's requirements, and prepare recommendations.
+5. **Display guidance** — the chatbot presents a consolidated answer with suitable options and explanations.
+6. **Personalised roadmap** — eligible students can use the demonstration purchase flow to access the personalised roadmap.
+7. **Save and revisit** — supported profile, history, and roadmap features use persistent storage.
+8. **Administration and analytics** — authorised administrators manage college catalogue records and review available statistics.
 
 ### Request Routing
 
@@ -177,10 +177,10 @@ These routes describe the intended routing contract. Verify the active endpoint 
 
 ## Milestone Progression
 
-- **M1 â€” Foundation:** core agents, student interface, and FastAPI foundation.
-- **M2 â€” Tool integration:** request routing, tool selection, execution, and consolidated responses.
-- **M3 â€” Personalised career guidance:** career research, recommendations, memory, and roadmap generation.
-- **M4 â€” Administration and analytics:** college catalogue management, student/business statistics, monitoring, and reporting.
+- **M1 — Foundation:** core agents, student interface, and FastAPI foundation.
+- **M2 — Tool integration:** request routing, tool selection, execution, and consolidated responses.
+- **M3 — Personalised career guidance:** career research, recommendations, memory, and roadmap generation.
+- **M4 — Administration and analytics:** college catalogue management, student/business statistics, monitoring, and reporting.
 
 The milestone progression describes how the project evolves toward the integrated experience. Existing standalone pages or workflows should be identified as such until their integration is verified.
 
@@ -188,7 +188,7 @@ The milestone progression describes how the project evolves toward the integrate
 
 - Keep `college_admin.db` and `student_data.db` separate; do not overwrite existing college catalogue or student records when documenting or testing the project.
 - College fees, placement figures, and other catalogue values are stored data and should not be presented as independently verified facts unless separately confirmed.
-- The â‚¹150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
+- The ₹150 roadmap purchase is a simulated academic-project payment flow, not a verified real payment.
 - Distinguish implemented and tested features from planned or pending integration.
 
 ## Author

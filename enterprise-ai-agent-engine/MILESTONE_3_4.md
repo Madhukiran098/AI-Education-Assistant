@@ -176,7 +176,7 @@ The target experience is one student-facing chatbot integrated into the existing
 3. The backend identifies the request category and sends it to the appropriate workflow.
 4. Planner, Research, Analysis, and Decision coordinate internally. The student sees a consolidated answer rather than separate agent outputs.
 5. Career guidance can use student context, research, and analysis to present recommendations and a roadmap preview.
-6. The existing demonstration purchase flow controls access to the paid roadmap experience. The â‚¹150 amount is simulated and must not be described as a real payment-provider transaction.
+6. The existing demonstration purchase flow controls access to the paid roadmap experience. The ₹150 amount is simulated and must not be described as a real payment-provider transaction.
 7. Supported history and memory features allow prior information to be revisited.
 8. The separate College Admin Dashboard manages catalogue information and provides available administrative statistics.
 
@@ -203,4 +203,4 @@ The single-chatbot experience is the intended integration target. Any existing s
 
 Keep `college_admin.db` and `student_data.db` separate. Do not seed, replace, or reset the existing college catalogue or student records as part of documentation changes.
 
-The â‚¹150 roadmap purchase is a simulated academic-project flow. It is not evidence of a verified real payment. College fees and placement values should be described as catalogue data unless independently verified.
+The ₹150 roadmap purchase is a simulated academic-project flow. It is not evidence of a verified real payment. College fees and placement values should be described as catalogue data unless independently verified.
